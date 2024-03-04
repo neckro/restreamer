@@ -20,7 +20,7 @@ const crypto = require("crypto");
 
 // modules
 const logger = require.main.require("./classes/Logger")("Webserver");
-const indexRouter = require("./controllers/index");
+const adminRouter = require("./controllers/admin");
 const apiV1 = require("./controllers/api/v1");
 
 // middleware
@@ -105,7 +105,7 @@ class RestreamerExpressApp {
      * add the restreamer routes
      */
     addRoutes() {
-        indexRouter(this.app);
+        adminRouter(this.app);
         this.app.use("/v1", apiV1);
     }
 
@@ -210,8 +210,8 @@ class RestreamerExpressApp {
     initProd() {
         logger.debug("Init webserver with PROD environment");
         this.initAlways();
-        this.app.get("/", (req, res) => {
-            res.sendFile(path.join(global.__public, "index.prod.html"));
+        this.app.get("/admin", (req, res) => {
+            res.sendFile(path.join(global.__public, "admin.prod.html"));
         });
         this.add404ErrorHandling();
         this.add500ErrorHandling();
@@ -223,8 +223,8 @@ class RestreamerExpressApp {
     initDev() {
         logger.debug("Init webserver with DEV environment");
         this.initAlways();
-        this.app.get("/", (req, res) => {
-            res.sendFile(path.join(global.__public, "index.dev.html"));
+        this.app.get("/admin", (req, res) => {
+            res.sendFile(path.join(global.__public, "admin.dev.html"));
         });
         this.add404ErrorHandling();
         this.add500ErrorHandling();
